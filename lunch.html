@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="getLunch()">随机午餐</button>
+</body>
+<style>
+    button{
+        width: 10%;
+        height: 10%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+    }
+</style>
+<script>
+    var s =window.localStorage.getItem("lunch")
+    var timeStr = '-';
+    var curDate = new Date();
+    var curYear =curDate.getFullYear();  //获取完整的年份(4位,1970-????)
+    var curMonth = curDate.getMonth()+1;  //获取当前月份(0-11,0代表1月)
+    var curDay = curDate.getDate();       //获取当前日(1-31)
+    var Current= curYear+timeStr+curMonth+timeStr+curDay
+    var todayGet = window.localStorage.getItem(Current);
+
+    if(s){
+        s = s.split(",")
+    }else{
+        s = ['麻辣烫','麻辣香锅','小龙虾','麻辣拌','汉堡包','盖饭','面食']
+    }
+    function getNumber() {
+        var AllLength = s.length;
+        var index = Math.floor(Math.random() * AllLength)
+        return index
+    }
+    async function getLunch() {
+        if(todayGet == Current){
+            alert("今天已获取");
+            return false;
+        }
+        let code = await getNumber();
+        if(code>=0 & code <= 6){
+            alert(s[code]?s[code]:'没有相应的食物')
+            s.splice(code,1)
+            window.localStorage.setItem('lunch',s)
+            window.localStorage.setItem(Current,Current)
+
+        }else{
+            alert("没有相应的食物")
+        }
+    }
+</script>
+</html>
